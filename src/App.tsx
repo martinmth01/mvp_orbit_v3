@@ -15,6 +15,7 @@ import Signup from "@/pages/Signup";
 import ResetPassword from "@/pages/ResetPassword";
 import Dashboard from "@/pages/Dashboard";
 import NotFound from "@/pages/NotFound";
+import { ProfilePage } from '@/pages/dashboard/profile';
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
+            <Route path="/dashboard/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
