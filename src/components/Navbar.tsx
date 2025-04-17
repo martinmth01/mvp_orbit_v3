@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface NavbarProps {
   isDarkMode: boolean;
@@ -11,9 +11,20 @@ interface NavbarProps {
 
 const Navbar = ({ isDarkMode, toggleDarkMode }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
   };
 
   return (
@@ -41,12 +52,26 @@ const Navbar = ({ isDarkMode, toggleDarkMode }: NavbarProps) => {
             <Button variant="ghost" size="icon" onClick={toggleDarkMode} aria-label="Changer le thème">
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            <Link to="/login">
-              <Button variant="outline">Connexion</Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="btn-gradient">Inscription</Button>
-            </Link>
+            {user ? (
+              <>
+                <Link to="/dashboard">
+                  <Button variant="outline">Tableau de bord</Button>
+                </Link>
+                <Button variant="ghost" onClick={handleSignOut} className="flex items-center gap-2">
+                  <LogOut className="h-4 w-4" />
+                  Déconnexion
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline">Connexion</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="btn-gradient">Inscription</Button>
+                </Link>
+              </>
+            )}
           </nav>
 
           {/* Mobile Menu Trigger */}
@@ -98,12 +123,33 @@ const Navbar = ({ isDarkMode, toggleDarkMode }: NavbarProps) => {
                 Contact
               </Link>
               <div className="pt-2 flex flex-col space-y-2">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" className="w-full">Connexion</Button>
-                </Link>
-                <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full btn-gradient">Inscription</Button>
-                </Link>
+                {user ? (
+                  <>
+                    <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" className="w-full">Tableau de bord</Button>
+                    </Link>
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMenuOpen(false);
+                      }} 
+                      className="w-full flex items-center justify-center gap-2"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Déconnexion
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" className="w-full">Connexion</Button>
+                    </Link>
+                    <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
+                      <Button className="w-full btn-gradient">Inscription</Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>
