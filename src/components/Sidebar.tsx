@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from '@/hooks/useAuth';
 import { 
   MessageSquare, 
   Settings, 
@@ -23,6 +24,17 @@ interface SidebarProps {
 
 const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
   const [activeConversation, setActiveConversation] = useState('1');
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
   
   // Mock conversations
   const conversations = [
@@ -133,7 +145,7 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
             <HelpCircle className={`h-5 w-5 ${collapsed ? 'mx-auto' : 'mr-2'}`} />
             {!collapsed && <span>Aide & Support</span>}
           </Button>
-          <Button variant="ghost" className={`w-full justify-start text-destructive ${collapsed ? 'px-2' : ''}`}>
+          <Button variant="ghost" className={`w-full justify-start text-destructive ${collapsed ? 'px-2' : ''}`} onClick={handleSignOut}>
             <LogOut className={`h-5 w-5 ${collapsed ? 'mx-auto' : 'mr-2'}`} />
             {!collapsed && <span>Déconnexion</span>}
           </Button>

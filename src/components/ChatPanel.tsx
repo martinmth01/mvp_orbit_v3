@@ -1,9 +1,9 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, Paperclip, Mic } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ChatMessage from "./ChatMessage";
+import { cn } from "@/lib/utils";
 
 // Create a proper type for our messages
 type Message = {
@@ -12,6 +12,10 @@ type Message = {
   sender: 'bot' | 'user';
   timestamp: Date;
 };
+
+interface ChatPanelProps {
+  className?: string;
+}
 
 // Update the initialMessages to use our new Message type and French content
 const initialMessages: Message[] = [
@@ -23,7 +27,7 @@ const initialMessages: Message[] = [
   },
 ];
 
-const ChatPanel = () => {
+const ChatPanel = ({ className }: ChatPanelProps) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -70,7 +74,7 @@ const ChatPanel = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className={cn("flex flex-col h-full", className)}>
       <div className="bg-card border-b p-4">
         <h2 className="text-xl font-semibold">Assistant Financier</h2>
         <p className="text-sm text-muted-foreground">Posez-moi n'importe quelle question sur vos finances</p>
