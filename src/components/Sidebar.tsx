@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -118,10 +117,12 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
 
       <div className="p-4 border-t">
         <div className="space-y-1">
-          <Button variant="ghost" className={`w-full justify-start ${collapsed ? 'px-2' : ''}`}>
-            <User className={`h-5 w-5 ${collapsed ? 'mx-auto' : 'mr-2'}`} />
-            {!collapsed && <span>Profil</span>}
-          </Button>
+          <Link to="/dashboard/profile">
+            <Button variant="ghost" className={`w-full justify-start ${collapsed ? 'px-2' : ''}`}>
+              <User className={`h-5 w-5 ${collapsed ? 'mx-auto' : 'mr-2'}`} />
+              {!collapsed && <span>Profil</span>}
+            </Button>
+          </Link>
           <Button variant="ghost" className={`w-full justify-start ${collapsed ? 'px-2' : ''}`}>
             <Settings className={`h-5 w-5 ${collapsed ? 'mx-auto' : 'mr-2'}`} />
             {!collapsed && <span>Paramètres</span>}

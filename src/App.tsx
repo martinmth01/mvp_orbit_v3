@@ -77,7 +77,14 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
-            <Route path="/dashboard/profile" element={<ProfilePage />} />
+            <Route 
+              path="/dashboard/profile" 
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

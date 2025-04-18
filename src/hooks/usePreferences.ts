@@ -16,9 +16,13 @@ export const usePreferences = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ['preferences'],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Utilisateur non connecté');
+
       const { data, error } = await supabase
         .from('profiles')
         .select('objectif_invest, horizon, risque, patrimoine_bracket, experience')
+        .eq('id', user.id)
         .single();
 
       if (error) throw error;
@@ -28,14 +32,21 @@ export const usePreferences = () => {
 
   const updatePreferences = useMutation({
     mutationFn: async (updates: Partial<Preferences>) => {
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError) throw new Error('Erreur d\'authentification');
+      if (!user) throw new Error('Utilisateur non connecté');
+
       const { data, error } = await supabase
         .from('profiles')
         .update(updates)
-        .eq('id', (await supabase.auth.getUser()).data.user?.id)
+        .eq('id', user.id)
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erreur lors de la mise à jour:', error);
+        throw new Error('Erreur lors de la mise à jour des préférences');
+      }
       return data as Preferences;
     },
     onSuccess: () => {
