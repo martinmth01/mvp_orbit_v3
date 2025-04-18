@@ -24,7 +24,7 @@ interface SidebarProps {
 
 const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
   const [activeConversation, setActiveConversation] = useState('1');
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const navigate = useNavigate();
   
   const handleSignOut = async () => {
@@ -67,17 +67,17 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
         {collapsed ? (
           <Avatar className="h-10 w-10 mx-auto">
             <AvatarImage src="https://randomuser.me/api/portraits/men/42.jpg" alt="Utilisateur" />
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarFallback>{user?.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
           </Avatar>
         ) : (
           <div className="flex items-center">
             <Avatar className="h-10 w-10 mr-3">
               <AvatarImage src="https://randomuser.me/api/portraits/men/42.jpg" alt="Utilisateur" />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarFallback>{user?.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
             </Avatar>
             <div>
-              <div className="font-medium">Jean Dupont</div>
-              <div className="text-xs text-muted-foreground">jean.dupont@example.com</div>
+              <div className="font-medium">{user?.email || 'Utilisateur'}</div>
+              <div className="text-xs text-muted-foreground">Connecté</div>
             </div>
           </div>
         )}
