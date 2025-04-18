@@ -26,7 +26,7 @@
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 36 100% 85%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-foreground: 215 25% 27%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -48,7 +48,6 @@
   }
 
   .dark {
-    --orange: 25 95% 63%;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -67,24 +66,24 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 36 100% 65%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 36 100% 85%;
+    --accent-foreground: 215 25% 27%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 196 80% 45%;
 
     --sidebar-background: 222.2 84% 4.9%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 196 80% 36%;
     --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 36 100% 65%;
+    --sidebar-accent: 36 100% 85%;
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 217.2 32.6% 17.5%;
-    --sidebar-ring: 212.7 26.8% 83.9%;
+    --sidebar-ring: 196 80% 45%;
   }
 }
 
@@ -119,8 +118,30 @@
     @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  .interactive-state {
+    @apply transition-all duration-150 ease-in-out
+           hover:bg-accent hover:text-accent-foreground hover:font-medium
+           focus:bg-accent focus:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-amber-500
+           active:bg-accent active:text-accent-foreground
+           data-[state=selected]:bg-accent data-[state=selected]:text-accent-foreground data-[state=selected]:font-medium
+           data-[state=selected]:ring-2 data-[state=selected]:ring-amber-500;
+  }
+
   .btn-orange-gradient {
-    @apply bg-gradient-to-r from-[#FF8C00] via-[#FFA500] to-[#FFD700] text-white hover:shadow-lg transition-all duration-300 hover:scale-105;
+    @apply bg-gradient-to-r from-[#FF8C00] via-[#FFA500] to-[#FFD700] 
+    text-gray-900 dark:text-gray-900
+    font-medium
+    hover:bg-gradient-to-r hover:from-[#E67E00] hover:via-[#E69500] hover:to-[#E6C200]
+    hover:text-gray-900 dark:hover:text-gray-900 hover:font-semibold
+    transition-all duration-150 
+    hover:shadow-lg hover:scale-105
+    focus:ring-2 focus:ring-amber-500 focus:outline-none
+    [&_svg]:text-gray-900 hover:[&_svg]:text-gray-900
+    dark:[&_svg]:text-gray-900 dark:hover:[&_svg]:text-gray-900;
+  }
+
+  .btn-orange-gradient:focus-visible {
+    @apply outline-none ring-2 ring-black/20 ring-offset-2 dark:ring-black/40;
   }
 
   .hero-gradient {
