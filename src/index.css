@@ -45,6 +45,8 @@
     --sidebar-accent-foreground: 222.2 47.4% 11.2%;
     --sidebar-border: 214.3 31.8% 91.4%;
     --sidebar-ring: 196 80% 45%;
+
+    --navbar-height: 72px;
   }
 
   .dark {
@@ -84,6 +86,17 @@
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 217.2 32.6% 17.5%;
     --sidebar-ring: 196 80% 45%;
+  }
+
+  /* Gestion du scroll-to-anchor */
+  h1[id], h2[id], [data-section] {
+    scroll-margin-top: calc(var(--navbar-height) + 1rem);
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --navbar-height: 88px;
+    }
   }
 }
 
