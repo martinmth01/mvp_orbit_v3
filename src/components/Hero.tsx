@@ -1,8 +1,20 @@
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { useAuth } from '@/hooks/useAuth';
 
 const Hero = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleStartClick = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/signup');
+    }
+  };
+
   return (
     <section className="pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
       <div className="container-custom">
@@ -16,12 +28,13 @@ const Hero = () => {
                 Orbit Patrimoine combine les insights propulsés par l'IA avec des conseils personnalisés pour vous aider à prendre des décisions financières en toute confiance.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/signup">
-                  <Button className="btn-orange-gradient text-lg px-6 py-6 rounded-full">
-                    Commencer
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={handleStartClick}
+                  className="btn-orange-gradient text-lg px-6 py-6 rounded-full"
+                >
+                  Commencer
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
                 <Link to="/about">
                   <Button variant="outline" className="text-lg px-6 py-6 rounded-full">
                     En savoir plus

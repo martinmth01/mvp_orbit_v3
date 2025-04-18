@@ -36,7 +36,9 @@ const Sidebar = ({ collapsed, toggleSidebar }: SidebarProps) => {
       <div className="flex items-center justify-between p-4 border-b">
         {!collapsed && (
           <div className="flex items-center">
-            <span className="text-xl font-serif font-bold text-primary">Orbit</span>
+            <Link to="/" className="hover:opacity-80 transition-opacity">
+              <span className="text-xl font-serif font-bold text-primary">Orbit</span>
+            </Link>
           </div>
         )}
         <Button 
