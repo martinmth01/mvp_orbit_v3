@@ -19,14 +19,27 @@ export const usePreferences = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Utilisateur non connecté');
 
-      const { data, error } = await supabase
+      // Vérifier si le profil existe
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('objectif_invest, horizon, risque, patrimoine_bracket, experience')
+        .select('*')
         .eq('id', user.id)
         .single();
 
-      if (error) throw error;
-      return data as Preferences;
+      // Si le profil n'existe pas, le créer
+      if (profileError && profileError.code === 'PGRST116') {
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert([{ id: user.id }])
+          .select()
+          .single();
+
+        if (createError) throw createError;
+        return newProfile as Preferences;
+      }
+
+      if (profileError) throw profileError;
+      return profile as Preferences;
     },
   });
 
